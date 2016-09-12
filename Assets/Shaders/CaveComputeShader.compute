@@ -1,0 +1,22 @@
+﻿#pragma kernel CSMain
+
+StructuredBuffer<float3> InputPos;
+StructuredBuffer<float3> Normals;
+StructuredBuffer<float> HeightMap;
+StructuredBuffer<float2> WaveLength;
+RWStructuredBuffer<float3> OutputPos;
+
+float noiseIntensity, waveIntensity;
+int length, width;
+
+[numthreads(1, 1, 1)]
+void CSMain(uint3 id : SV_DispatchThreadID)
+{
+	if (id.x < length) {
+		OutputPos[id.x] = InputPos[id.x] + (1 - HeightMap[id.x]) * Normals[id.x] * noiseIntensity;
+
+		int k = (id.x / width);
+		OutputPos[id.x].x += WaveLength[k].x * waveIntensity;
+		OutputPos[id.x].y += WaveLength[k].y * waveIntensity;
+	}
+}
