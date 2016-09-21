@@ -2,42 +2,24 @@
 
 public class Boulder : IPoolObject
 {
-    Transform[] childTransforms;
-    Vector3[] localPoss;
-    bool hasChildren;
-
-    void Start()
-    {
-        hasChildren = transform.childCount > 0;
-        if (hasChildren)
-        {
-            childTransforms = GetComponentsInChildren<Transform>();
-            localPoss = new Vector3[childTransforms.Length];
-            for (int i = 0; i < childTransforms.Length; i++)
-            {
-                localPoss[i] = childTransforms[i].localPosition;
-            }
-        }
-
-    }
-
+    Rigidbody rg = null;
+    
     public override void Spawn(Vector3 position, Quaternion rotation, Vector3 scale)
     {
         base.Spawn(position, rotation, scale);
-        if (hasChildren)
-        {
-            for (int i = 0; i < childTransforms.Length; i++)
-            {
-                childTransforms[i].localPosition = localPoss[i];
-            }
-        }
+        if (rg == null)
+            rg = GetComponent<Rigidbody>();
+        rg.AddForce(Physics.gravity * scale.x, ForceMode.Impulse);
+        rg.AddTorque(transform.eulerAngles * 2, ForceMode.Impulse);
+
         ready = false;
     }
 
     public override void Destroy()
     {
+        rg.velocity = Vector3.zero;
         base.Destroy();
         ready = true;
     }
-
+    
 }

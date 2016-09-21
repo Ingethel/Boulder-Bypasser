@@ -46,6 +46,8 @@ public class CaveChunkHandler : MonoBehaviour
         caveManager.GetSubWave(ref waveform, (waveform.Length-1) * numberOfChild);
 
         threadJob = new Job();
+        threadJob.KeepAwake = true;
+
         threadJob.InputPos = initialMeshData.vertices;
         threadJob.Normals = initialMeshData.normals;
 
@@ -59,11 +61,11 @@ public class CaveChunkHandler : MonoBehaviour
 
     IEnumerator UpdateChuck()
     {
+        threadJob.Start();
         while (true)
         {
-            threadJob.Start();
             yield return StartCoroutine(threadJob.WaitFor());
-
+            
             mesh.vertices = threadJob.OutputPos;
             mesh.RecalculateNormals();
             meshCollider.sharedMesh = meshFilter.sharedMesh;
@@ -73,7 +75,15 @@ public class CaveChunkHandler : MonoBehaviour
 
             threadJob.noiseIntensity = noiseIntensity;
             threadJob.waveIntensity = waveIntensity;
+   
+            threadJob.Redo();
         }
+    }
+
+    public void ExitRoutine()
+    {
+        StopAllCoroutines();
+        threadJob.KeepAwake = false;
     }
 
     public void SetMeshAttributes(int Iradius, int Idepth, int InumberOfChild, int Iwidth, float IradiusStepSize, float IdepthStepSize, Material Imaterial)

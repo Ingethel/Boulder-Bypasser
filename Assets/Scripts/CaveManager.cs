@@ -48,6 +48,8 @@ public class CaveManager : MonoBehaviour
     public GameObject[] chunks;
     CaveChunkHandler[] chunkHandlers;
 
+    PlayerMovement player;
+
     void Awake()
     {
         seed = (int)System.DateTime.Now.Ticks;
@@ -108,6 +110,9 @@ public class CaveManager : MonoBehaviour
     void Start()
     {
         manager = FindObjectOfType<GameManager>();
+        player = FindObjectOfType<PlayerMovement>();
+        player.movementIncreasedEvents += AdjustSpeed;
+        AdjustSpeed();
         StartCoroutine(UpdateDirectionalNoise(2));
         StartCoroutine(UpdateWavelength(0.05f));
     }
@@ -197,5 +202,10 @@ public class CaveManager : MonoBehaviour
     public Vector2 GetWaveOffset()
     {
         return waveform[waveform.Length/2] * waveIntensity;
+    }
+
+    public void AdjustSpeed()
+    {
+        speed = player.movementSpeed / 4;
     }
 }

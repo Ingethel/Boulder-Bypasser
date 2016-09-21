@@ -12,9 +12,11 @@ public class Job : ThreadJob
     public float noiseIntensity, waveIntensity;
     public int width;
 
+    
     protected override void ThreadFunction()
     {
-        for (int i = 0; i < InputPos.Length; i++) {
+        for (int i = 0; i < InputPos.Length; i++)
+        {
             OutputPos[i] = InputPos[i] + (1 - HeightMap[i]) * Normals[i] * noiseIntensity;
 
             int k = (i / width);
@@ -22,5 +24,5 @@ public class Job : ThreadJob
             OutputPos[i].y += WaveLength[k].y * waveIntensity;
         }
     }
-
+    
 }

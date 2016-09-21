@@ -41,7 +41,6 @@ public class BoulderSpawnManager : MonoBehaviour
         {
             pool.CreateMultiPool(multiPools[i].obj, multiPools[i].probabilities, multiPools[i].totalSize, i, "PoolObject_" + i.ToString());
         }
-        Physics.gravity = new Vector3(0, 0, -1.0F);
         safePoint = new Vector2(xPoints / 2, yPoints / 2);
         spawns = new Queue<NewSpawn>();
         initialiseArray();
@@ -86,8 +85,8 @@ public class BoulderSpawnManager : MonoBehaviour
             {
                 NewSpawn s = spawns.Dequeue();
                 s.position += transform.position;
-                if (s.magnitude < 20)
-                    pool.SpawnObject(0, s.position, Quaternion.identity, Vector3.one * (s.magnitude + 7));
+                if (s.magnitude < 30)
+                    pool.SpawnObject(0, s.position, UnityEngine.Random.rotation, Vector3.one * (s.magnitude + 7));
                 else
                     pool.SpawnObject(1, s.position, Quaternion.identity, Vector3.one * 12);
             }
@@ -246,7 +245,7 @@ public class BoulderSpawnManager : MonoBehaviour
         }
 
         if (highProb < 1 - lowProb)
-            highProb += 0.1f;
+            highProb += 0.01f;
     }
 
     void updateSafePoint()

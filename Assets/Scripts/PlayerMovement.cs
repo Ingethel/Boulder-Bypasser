@@ -1,18 +1,22 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 public class PlayerMovement : MonoBehaviour
 {
 
     public Transform target;
+
     public float movementSpeed;
+    public event Action movementIncreasedEvents;
+
     Vector3 rotation;
     Rigidbody rg;
     Vector3 velocity;
     CameraFollow cameraFollow;
     public ParticleSystem mainEngine;
     ParticleSystem.SizeOverLifetimeModule mainEngineBeam;
-
+    
     float boostSpeed = 1;
     bool boostCoolingEnabled = false;
 
@@ -21,6 +25,7 @@ public class PlayerMovement : MonoBehaviour
         rg = GetComponent<Rigidbody>();
         cameraFollow = Camera.main.GetComponent<CameraFollow>();
         mainEngineBeam = mainEngine.sizeOverLifetime;
+        Physics.gravity = new Vector3(0, 0, -movementSpeed);
     }
 
     public void UpdateFocus()
@@ -66,5 +71,14 @@ public class PlayerMovement : MonoBehaviour
         }
         boostCoolingEnabled = false;
     }
+    
+    public void MoveIncrease(float value)
+    {
+        movementSpeed += value;
 
+        Physics.gravity = new Vector3(0, 0, - movementSpeed);
+
+        if (movementIncreasedEvents != null)
+            movementIncreasedEvents();
+    }
 }
