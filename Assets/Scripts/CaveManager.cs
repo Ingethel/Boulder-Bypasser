@@ -49,7 +49,7 @@ public class CaveManager : MonoBehaviour
     CaveChunkHandler[] chunkHandlers;
 
     PlayerMovement player;
-
+    
     void Awake()
     {
         seed = (int)System.DateTime.Now.Ticks;
@@ -110,6 +110,7 @@ public class CaveManager : MonoBehaviour
     void Start()
     {
         manager = FindObjectOfType<GameManager>();
+        manager.EndGameEvent += StopRoutine;
         player = FindObjectOfType<PlayerMovement>();
         player.movementIncreasedEvents += AdjustSpeed;
         AdjustSpeed();

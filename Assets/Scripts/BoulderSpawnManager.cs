@@ -28,11 +28,10 @@ public class BoulderSpawnManager : MonoBehaviour
     List<Cluster> clusters;
     Queue<NewSpawn> spawns;
     Cell[,] arrayMap;
-
-    public bool stateOfGame;
-
+    
     PoolManager pool;
     CaveManager caveManager;
+    GameManager manager;
 
     void Awake()
     {
@@ -51,6 +50,9 @@ public class BoulderSpawnManager : MonoBehaviour
     void Start()
     {
         caveManager = FindObjectOfType<CaveManager>();
+        manager = FindObjectOfType<GameManager>();
+        manager.InGameEvent += StartRoutine;
+        manager.EndGameEvent += StopRoutine;
     }
 
     void FixedUpdate()
@@ -62,10 +64,15 @@ public class BoulderSpawnManager : MonoBehaviour
         transform.position = pos;
     }
 
-    public void StartProcess()
+    public void StartRoutine()
     {
         StartCoroutine(SpawnBoulder());
         StartCoroutine(SpawnDelayManager());
+    }
+
+    public void StopRoutine()
+    {
+        StopAllCoroutines();
     }
 
     IEnumerator SpawnDelayManager()
@@ -79,7 +86,7 @@ public class BoulderSpawnManager : MonoBehaviour
 
     IEnumerator SpawnBoulder()
     {
-        while (stateOfGame)
+        while (true)
         {
             if (spawns.Count > 0)
             {
@@ -274,6 +281,11 @@ public class BoulderSpawnManager : MonoBehaviour
         {
             return null;
         }
+    }
+
+    public Vector3 GetSafePoint()
+    {
+        return new Vector3(safePoint.x, safePoint.y, zPos) + transform.position;
     }
 }
 

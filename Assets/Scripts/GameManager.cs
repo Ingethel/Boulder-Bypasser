@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 #if UNITY_EDITOR 
@@ -18,8 +19,7 @@ public class GameManager : MonoBehaviour
         PAUSE,
         CALIBRATING
     };
-
-    BoulderSpawnManager spawnManager;
+    
     public Canvas menuUI;
     public Canvas endUI;
     public Canvas inGameUI;
@@ -32,11 +32,12 @@ public class GameManager : MonoBehaviour
     Canvas currentCanvas = null;
 
     bool inOptions = false;
-
-    CaveManager caveManager;
-    public Vector3 gravity;
+    
     PlayerState player;
     GameInput gameInput;
+
+    public event Action InGameEvent;
+    public event Action EndGameEvent;
 
     void Awake()
     {
@@ -54,9 +55,6 @@ public class GameManager : MonoBehaviour
     {
         player = FindObjectOfType<PlayerState>();
         player.playerDeathEvents += OnPlayerDeath;
-        spawnManager = FindObjectOfType<BoulderSpawnManager>();
-        caveManager = FindObjectOfType<CaveManager>();
-        Physics.gravity = gravity;
         gameInput = FindObjectOfType<GameInput>();
     }
 
@@ -68,8 +66,9 @@ public class GameManager : MonoBehaviour
 
     public void Options()
     {
-        if (currentState != GameState.OPTIONS)
+        if (currentState != GameState.OPTIONS) {
             StartCoroutine(OptionsRoutine());
+        }
     }
 
     IEnumerator OptionsRoutine()
@@ -99,9 +98,8 @@ public class GameManager : MonoBehaviour
         gameInput.ReadSettings();
         ChangeState(GameState.INGAME);
         Calibrate();
-        spawnManager.stateOfGame = true;
-        spawnManager.StartProcess();
-        Physics.gravity *= 2;
+        if (InGameEvent != null)
+            InGameEvent();
     }
 
     public void EndGame()
@@ -109,7 +107,8 @@ public class GameManager : MonoBehaviour
         if (Screen.sleepTimeout != SleepTimeout.SystemSetting)
             Screen.sleepTimeout = SleepTimeout.SystemSetting;
         ChangeState(GameState.ENDGAME);
-        caveManager.StopRoutine();
+        if (EndGameEvent != null)
+            EndGameEvent();
     }
 
     public void Pause()
@@ -129,6 +128,8 @@ public class GameManager : MonoBehaviour
         {
             ChangeState(GameState.INGAME);
             Time.timeScale = 1;
+            if (InGameEvent != null)
+                InGameEvent();
         }
     }
 
@@ -146,7 +147,6 @@ public class GameManager : MonoBehaviour
     {
         if (Screen.sleepTimeout != SleepTimeout.NeverSleep)
             Screen.sleepTimeout = SleepTimeout.NeverSleep;
-
 #if UNITY_EDITOR
         EditorApplication.isPlaying = false;
 #else
