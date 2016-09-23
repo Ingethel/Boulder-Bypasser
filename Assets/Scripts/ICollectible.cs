@@ -3,9 +3,8 @@
 public class ICollectible : IPoolObject
 {
     
-    protected void OnTriggerEnter2D(Collider2D c)
+    protected void OnTriggerEnter(Collider c)
     {
-        Debug.Log("Collided");
         if (c.CompareTag("Player"))
         {
             Behave();

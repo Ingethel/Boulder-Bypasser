@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-public class SpeedIncreaseCollectibleBehaviour : ICollectible
+﻿public class SpeedIncreaseCollectibleBehaviour : ICollectible
 {
     PlayerMovement player;
 
@@ -9,7 +7,6 @@ public class SpeedIncreaseCollectibleBehaviour : ICollectible
         if (player == null)
             player = FindObjectOfType<PlayerMovement>();
         player.MoveIncrease(1);
-        Debug.Log("Collected!!");
     }
 
 }
