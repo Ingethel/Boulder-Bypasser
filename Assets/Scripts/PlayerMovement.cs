@@ -23,7 +23,7 @@ public class PlayerMovement : MonoBehaviour
     public void Start()
     {
         rg = GetComponent<Rigidbody>();
-        cameraFollow = Camera.main.GetComponent<CameraFollow>();
+        cameraFollow = FindObjectOfType<CameraFollow>();
         mainEngineBeam = mainEngine.sizeOverLifetime;
         Physics.gravity = new Vector3(0, 0, -movementSpeed);
     }

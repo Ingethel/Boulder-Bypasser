@@ -88,14 +88,12 @@ public class GameManager : MonoBehaviour
     public void ExitOptions()
     {
         inOptions = false;
-        gameInput.ReadSettings();
     }
 
     public void StartGame()
     {
         if (Screen.sleepTimeout != SleepTimeout.NeverSleep)
             Screen.sleepTimeout = SleepTimeout.NeverSleep;
-        gameInput.ReadSettings();
         ChangeState(GameState.INGAME);
         Calibrate();
         if (InGameEvent != null)

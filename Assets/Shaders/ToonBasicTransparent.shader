@@ -1,4 +1,4 @@
-Shader "Toon/Basic" {
+Shader "Custom/TransparentToon" {
 	Properties{
 		_Color("Main Color", Color) = (.5,.5,.5,1)
 		_MainTex("Base (RGB)", 2D) = "white" {}
@@ -6,22 +6,23 @@ Shader "Toon/Basic" {
 	}
 
 	SubShader{
-		Tags { "RenderType" = "Opaque" }
-		Pass {
-			Name "BASE"
-			Cull Off
-			
+		Tags{ "Queue" = "Transparent" "RenderType" = "Transparent" }
+		Pass{
+			Name "TRANSPARENT"
+			Blend SrcAlpha OneMinusSrcAlpha
+
 			CGPROGRAM
 			#pragma vertex vert
 			#pragma fragment frag
 			#pragma multi_compile_fog
 
 			#include "UnityCG.cginc"
-			
+
 			sampler2D _MainTex;
 			samplerCUBE _ToonShade;
 			float4 _MainTex_ST;
 			float4 _Color;
+			float _Alpha;
 
 			struct appdata 
 			{
@@ -58,7 +59,6 @@ Shader "Toon/Basic" {
 			}
 			ENDCG
 		}
-
 	}
 
 	Fallback "VertexLit"

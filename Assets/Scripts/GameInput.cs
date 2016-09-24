@@ -14,20 +14,21 @@ public class GameInput : MonoBehaviour
     Matrix4x4 calibrationMatrix;
 
     float accelerometerSpeed;
-    bool AccelerometerInput;
+    bool accelerometerInput;
 
     void Start()
     {
         _camera = Camera.main;
         player = FindObjectOfType<PlayerMovement>();
         manager = FindObjectOfType<GameManager>();
+        manager.InGameEvent += ReadSettings;
     }
 
     void Update()
     {
         if (manager.currentState == GameManager.GameState.INGAME)
         {
-            if (AccelerometerInput)
+            if (accelerometerInput)
                 ReadAccelerometer();
             else
                 ReadTouch();
@@ -129,8 +130,8 @@ public class GameInput : MonoBehaviour
 
     public void ReadSettings()
     {
-        AccelerometerInput = PlayerPrefs.GetInt(Settings.movement) == 1 ? true : false;
-        accelerometerSpeed = PlayerPrefs.GetInt(Settings.accelerometerSensitivity) * 10;
+        accelerometerInput = PlayerPrefs.GetInt(Settings.getString(Settings.LABELS.MOVEMENT_SETTIGNS)) == 1 ? true : false;
+        accelerometerSpeed = PlayerPrefs.GetInt(Settings.getString(Settings.LABELS.ACCELERATION_SPEED)) * 10;
     }
 
 }
