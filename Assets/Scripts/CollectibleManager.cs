@@ -28,7 +28,7 @@ public class CollectibleManager : MonoBehaviour {
     }
 
     public void StopRoutine() {
-        StopCoroutine(SpawnCollectible(spawnInterval));
+        StopAllCoroutines();
     }
 
     IEnumerator SpawnCollectible(float seconds)

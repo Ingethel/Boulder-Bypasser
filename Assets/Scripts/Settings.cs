@@ -8,7 +8,8 @@ public class Settings : MonoBehaviour
         MOVEMENT_SETTIGNS,
         ACCELERATION_SPEED,
         CAMERA_SETTINGS,
-        CHARACTER_TRANSPARENCY
+        CHARACTER_TRANSPARENCY,
+        REVERSE_CONTROL
     }
 
     public static string getString(LABELS label) {
@@ -26,17 +27,20 @@ public class Settings : MonoBehaviour
             case LABELS.CHARACTER_TRANSPARENCY:
                 _return = "Character Transparency";
                 break;
+            case LABELS.REVERSE_CONTROL:
+                _return = "Reverse Control";
+                break;
             default:
                 break;
         }
         return _return;
-
     }
 
     int movementSettings;
     int accelerometerSpeed;
     int cameraSettings;
-    
+    int inverseSettings;
+
     public event Action showSettings;
 
     void Awake()
@@ -46,25 +50,23 @@ public class Settings : MonoBehaviour
     
     public void ReadSettings()
     {
-        movementSettings = PlayerPrefs.GetInt(getString(LABELS.MOVEMENT_SETTIGNS));
-        if (movementSettings == 0)
+        if (PlayerPrefs.GetInt(getString(LABELS.MOVEMENT_SETTIGNS)) == 0)
         {
-            movementSettings = 1;
-            PlayerPrefs.SetInt(getString(LABELS.MOVEMENT_SETTIGNS), movementSettings);
+            PlayerPrefs.SetInt(getString(LABELS.MOVEMENT_SETTIGNS), 1);
         }
-
-        accelerometerSpeed = PlayerPrefs.GetInt(getString(LABELS.ACCELERATION_SPEED));
-        if (accelerometerSpeed == 0)
+        
+        if (PlayerPrefs.GetInt(getString(LABELS.ACCELERATION_SPEED)) == 0)
         {
-            accelerometerSpeed = 2;
-            PlayerPrefs.SetInt(getString(LABELS.ACCELERATION_SPEED), accelerometerSpeed);
+            PlayerPrefs.SetInt(getString(LABELS.ACCELERATION_SPEED), 2);
         }
-
-        cameraSettings = PlayerPrefs.GetInt(getString(LABELS.CAMERA_SETTINGS));
-        if (cameraSettings == 0)
+        
+        if (PlayerPrefs.GetInt(getString(LABELS.CAMERA_SETTINGS)) == 0)
         {
-            cameraSettings = 1;
-            PlayerPrefs.SetInt(getString(LABELS.CAMERA_SETTINGS), cameraSettings);
+            PlayerPrefs.SetInt(getString(LABELS.CAMERA_SETTINGS), 1);
+        }
+        
+        if (PlayerPrefs.GetInt(getString(LABELS.REVERSE_CONTROL)) == 0) {
+            PlayerPrefs.SetInt(getString(LABELS.REVERSE_CONTROL), -1);
         }
     }
 
