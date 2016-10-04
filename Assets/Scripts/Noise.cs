@@ -2,9 +2,7 @@
 
 public static class Noise
 {
-
-    public enum NormalizeMode { Local, Global };
-
+    
     public static Texture2D GenerateNoiseTexture(int mapWidth, int mapHeight, int seed, float scale, int octaves, float persistance, float lacunarity, Vector2 offset)
     {
         Texture2D noiseMap = new Texture2D(mapWidth, mapHeight, TextureFormat.Alpha8, false);
