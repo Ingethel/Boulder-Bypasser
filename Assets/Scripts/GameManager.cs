@@ -124,6 +124,8 @@ public class GameManager : MonoBehaviour
     {
         if (currentState == GameState.PAUSE)
         {
+            if (Screen.sleepTimeout != SleepTimeout.NeverSleep)
+                Screen.sleepTimeout = SleepTimeout.NeverSleep;
             ChangeState(GameState.INGAME);
             Time.timeScale = 1;
             if (InGameEvent != null)

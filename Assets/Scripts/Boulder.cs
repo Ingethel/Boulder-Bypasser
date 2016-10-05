@@ -9,7 +9,7 @@ public class Boulder : IPoolObject
         base.Spawn(position, rotation, scale);
         if (rg == null)
             rg = GetComponent<Rigidbody>();
-        rg.AddForce(Physics.gravity * scale.x, ForceMode.Impulse);
+        rg.AddForce(Physics.gravity * (7 * 7/scale.x), ForceMode.Impulse);
         rg.AddTorque(transform.eulerAngles * 2, ForceMode.Impulse);
 
         ready = false;
