@@ -9,7 +9,9 @@ public class Settings : MonoBehaviour
         ACCELERATION_SPEED,
         CAMERA_SETTINGS,
         CHARACTER_TRANSPARENCY,
-        REVERSE_CONTROL
+        REVERSE_CONTROL_X,
+        REVERSE_CONTROL_Y,
+        HIGHSCORE,
     }
 
     public static string getString(LABELS label) {
@@ -27,20 +29,21 @@ public class Settings : MonoBehaviour
             case LABELS.CHARACTER_TRANSPARENCY:
                 _return = "Character Transparency";
                 break;
-            case LABELS.REVERSE_CONTROL:
-                _return = "Reverse Control";
+            case LABELS.REVERSE_CONTROL_X:
+                _return = "Reverse Control X";
+                break;
+            case LABELS.REVERSE_CONTROL_Y:
+                _return = "Reverse Control Y";
+                break;
+            case LABELS.HIGHSCORE:
+                _return = "High Score";
                 break;
             default:
                 break;
         }
         return _return;
     }
-
-    int movementSettings;
-    int accelerometerSpeed;
-    int cameraSettings;
-    int inverseSettings;
-
+    
     public event Action showSettings;
 
     void Awake()
@@ -65,8 +68,13 @@ public class Settings : MonoBehaviour
             PlayerPrefs.SetInt(getString(LABELS.CAMERA_SETTINGS), 1);
         }
         
-        if (PlayerPrefs.GetInt(getString(LABELS.REVERSE_CONTROL)) == 0) {
-            PlayerPrefs.SetInt(getString(LABELS.REVERSE_CONTROL), -1);
+        if (PlayerPrefs.GetInt(getString(LABELS.REVERSE_CONTROL_X)) == 0) {
+            PlayerPrefs.SetInt(getString(LABELS.REVERSE_CONTROL_X), -1);
+        }
+
+        if (PlayerPrefs.GetInt(getString(LABELS.REVERSE_CONTROL_Y)) == 0)
+        {
+            PlayerPrefs.SetInt(getString(LABELS.REVERSE_CONTROL_Y), -1);
         }
     }
 

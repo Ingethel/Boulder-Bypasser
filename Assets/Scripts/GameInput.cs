@@ -15,7 +15,7 @@ public class GameInput : MonoBehaviour
 
     float accelerometerSpeed;
     bool accelerometerInput;
-    int inverseControl;
+    int inverseControl_X, inverseControl_Y;
 
     void Start()
     {
@@ -89,8 +89,8 @@ public class GameInput : MonoBehaviour
             Vector3 dir = Vector3.zero;
             Vector3 acceleration = calibrationMatrix.MultiplyVector(Input.acceleration);
 
-            dir.x = acceleration.x;
-            dir.y = -acceleration.y;
+            dir.x = acceleration.x * -inverseControl_X;
+            dir.y = acceleration.y * inverseControl_Y;
 
             if (dir.sqrMagnitude > 1)
                 dir.Normalize();
@@ -98,7 +98,7 @@ public class GameInput : MonoBehaviour
             dir *= Time.deltaTime;
             if (dir.x != 0.01 || dir.y != 0.01)
             {
-                marker.Translate(dir * accelerometerSpeed * -inverseControl);
+                marker.Translate(dir * accelerometerSpeed);
                 player.UpdateFocus();
             }
         }
@@ -133,7 +133,8 @@ public class GameInput : MonoBehaviour
     {
         accelerometerInput = PlayerPrefs.GetInt(Settings.getString(Settings.LABELS.MOVEMENT_SETTIGNS)) == 1;
         accelerometerSpeed = PlayerPrefs.GetInt(Settings.getString(Settings.LABELS.ACCELERATION_SPEED)) * 10;
-        inverseControl = PlayerPrefs.GetInt(Settings.getString(Settings.LABELS.REVERSE_CONTROL));
+        inverseControl_X = PlayerPrefs.GetInt(Settings.getString(Settings.LABELS.REVERSE_CONTROL_X));
+        inverseControl_Y = PlayerPrefs.GetInt(Settings.getString(Settings.LABELS.REVERSE_CONTROL_Y));
     }
 
 }

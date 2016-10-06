@@ -2,7 +2,7 @@
 
 public class IPoolObject : MonoBehaviour
 {
-
+    public float secondsForDeath = 0;
     public bool ready { get; protected set; }
 
     protected virtual void Awake()
@@ -20,7 +20,13 @@ public class IPoolObject : MonoBehaviour
 
     public virtual void Destroy()
     {
+        Invoke("Kill", secondsForDeath);
+    }
+
+    protected void Kill()
+    {
         gameObject.SetActive(false);
     }
+
 }
 
