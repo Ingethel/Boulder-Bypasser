@@ -43,7 +43,7 @@ public class PlayerMovement : MonoBehaviour
     public void SpeedBoost()
     {
         AnimationCurve curve = mainEngineBeam.size.curve;
-        float scalar = mainEngineBeam.size.curveScalar;
+        float scalar = mainEngineBeam.size.curveMultiplier;
         if (scalar < 2)
         {
             scalar += 0.1f;
@@ -61,7 +61,7 @@ public class PlayerMovement : MonoBehaviour
     {
         boostCoolingEnabled = true;
         AnimationCurve curve = mainEngineBeam.size.curve;
-        float scalar = mainEngineBeam.size.curveScalar;
+        float scalar = mainEngineBeam.size.curveMultiplier;
         while (scalar > 1)
         {
             scalar -= 0.1f;

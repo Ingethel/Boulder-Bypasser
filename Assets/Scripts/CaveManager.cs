@@ -59,7 +59,9 @@ public class CaveManager : MonoBehaviour
         waveform = Noise.InitialDirectionalNoise(depth, dir);
         heightMap = Noise.GenerateNoiseMap(width, depth, seed, scale, octaves, persistance, lacunarity, offset);
 
-        useShader = SystemInfo.supportsComputeShaders;
+        //useShader = SystemInfo.supportsComputeShaders;
+        useShader = false;
+
         if (useShader)
         {
             foreach (GameObject o in chunks)
